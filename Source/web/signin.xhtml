@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>  - Signing</title>
+        <style>
+            #signinForm li {
+                color: red!important;
+                margin-left: -25px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Furniture Shop
+                                </h2>
+                                <p>Sign In</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">Sign In</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <section class="content account">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                                <div class="login-form-wrapper">
+                                    <h:form id="signinForm">
+                                        <h3>Sign In</h3>
+                                        <div class="form-group">
+                                            <label>Email<span class="required">*</span></label>
+                                            <h:inputText value="#{accountController.username}" class="form-control" required="true" requiredMessage="Email can not be blank." id="email" validatorMessage="Please enter a valid e-mail address">
+                                                <f:validateRegex pattern="\s*[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]\s*" />
+                                            </h:inputText>
+                                            <h:messages for="email"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password<span class="required">*</span></label>
+                                            <h:inputSecret value="#{accountController.password}" class="form-control" required="true" redisplay="true" requiredMessage="Password can not be blank." id="password">
+                                                <!--<f:validateLength minimum = "6" maximum = "20"/>-->
+<!--                                                <f:validateRegex pattern="^\s*(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}\s*$" />-->
+                                            </h:inputSecret>
+                                            <h:messages for="password" />
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <h:selectBooleanCheckbox value="#{accountController.rememberMe}" class="checkbox col-md-1"/>                                              
+                                                <label for="signin-remember" class="col-lg-11">Remember me</label>
+                                            </div>
+                                        </div>
+                                        <h:messages class="alert alert-danger" style="text-align: center; list-style: none" for="signinForm"/>                                                                             
+                                        <h:commandButton value="Submit" action="#{accountController.checkLogin()}" class="btn btn-primary btn-lg btn-block"/>
+                                    </h:form>
+                                </div>
+                                <p class="form-text">Not have an account yet? <h:link outcome="signup" value="Sign up"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

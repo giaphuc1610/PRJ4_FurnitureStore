@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Furniture Shop
+            - Profile</title>
+    </h:head>
+    <h:body>
+        <style>
+            #profileForm li, #changePasswordForm li {
+                color: red!important;
+                margin-left: -25px;
+            }
+            #changePasswordForm .ts.ts2 li {
+                color: black!important;
+                font-size: 1.5rem;
+            }
+        </style>
+        <ui:composition template="./dashBoardLayout.xhtml">
+            <ui:define name="breadcumb">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>My Account</h2>
+                                <p>Personal Information</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li><h:link outcome="account" value="My Account"/></li>
+                                    <li class="active">Personal Information</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+            <ui:define name="dashBoardContent">
+                <article class="account-content">
+
+                    <div class="account-profile-top">
+                        <div><h3>#{accountController.currentCustomer.firstName} #{accountController.currentCustomer.lastName} <small>#{accountController.currentCustomer.email}</small></h3></div>                        
+                    </div>
+
+                    <h:form class="form-horizontal" enctype="multipart/form-data" id="profileForm">                        
+
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">First Name<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputText value="#{accountController.currentCustomer.firstName}" class="form-control" required="true" requiredMessage="Please enter First name" validatorMessage="The First name must be the letter and must be capitalized the first letter" id="firstName">
+                                    <f:validateRegex 
+                                        pattern="^\s*([A-Z][A-Za-z]*(-|\s)*[A-Za-z]*)*\s*$" />
+                                </h:inputText>
+                                <h:messages for="firstName" />
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">Last Name<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputText value="#{accountController.currentCustomer.lastName}" class="form-control" required="true" requiredMessage="Please enter Last name" validatorMessage="The Last name must be the letter and must be capitalized the first letter" id="lastName">
+                                    <f:validateRegex 
+                                        pattern="^\s*([A-Z][A-Za-z]*(-|\s)*[A-Za-z]*)*\s*$" />
+                                </h:inputText>
+                                <h:messages for="lastName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">Phone Number<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputText value="#{accountController.currentCustomer.phone}" class="form-control" required="true" requiredMessage="Please enter the phone number of 10 digits." validatorMessage="The phone number is not in the correct format." id="phoneNumber">
+                                    <!--<f:validateLength maximum="1"/>-->
+                                    <f:validateRegex pattern="^\s*(09|03|07|08|05)[0-9]{8}\b\s*"/>
+                                </h:inputText>
+                                <h:messages for="phoneNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">Gender<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:selectOneMenu value="#{accountController.currentCustomer.gender}" class="form-control">
+                                    <f:selectItem itemValue="true" itemLabel="Male" />
+                                    <f:selectItem itemValue="false" itemLabel="Female" />                   
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8 col-lg-offset-3 col-lg-9">
+                                <h:commandButton value="Update" action="#{accountController.update()}" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </h:form>
+
+
+
+
+
+                    <h:form class="form-horizontal" id="changePasswordFormSuccess"></h:form>
+                    <h:form class="form-horizontal" id="changeOldPasswordWrong"></h:form>
+                    <h:form class="form-horizontal" id="changePasswordForm">
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">Old Password<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputSecret value="#{accountController.oldPass}" class="form-control" required="true" redisplay="true" requiredMessage="Please enter Old password" id="oldPassword"/>
+                                <h:messages for="oldPassword"/>
+                                <h:messages for="changeOldPasswordWrong"/>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">New Password<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputSecret value="#{accountController.newPass}" class="form-control" required="true" redisplay="true"  requiredMessage="Please enter New password" validatorMessage="Password must contain at least eight characters,  at least one uppercase letter, one lowercase letter and one number" id="newPassword">
+                                    <f:validateRegex pattern="^\s*(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}\s*$" />
+                                </h:inputSecret>
+                                <h:messages for="newPassword"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label">Confirm New Password<span class="required">*</span></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:inputSecret value="#{accountController.confirmPass}" class="form-control" required="true" redisplay="true"  requiredMessage="Please enter Confirm password" id="confirmPass"/>
+                                <h:messages for="confirmPass"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 col-lg-3 control-label"></label>
+                            <div class="col-md-8 col-lg-6">
+                                <h:messages for="changePasswordForm"/>
+                            </div>
+                        </div>  
+
+                        <!--Success-->
+                        <div class="form-group middle-box loginscreen animated fadeInRight">
+                            <h:messages style="text-align: center; list-style: none" class="alert alert-success ts ts2" for="changePasswordFormSuccess" />  
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8 col-lg-offset-3 col-lg-9">
+                                <h:commandButton value="Change Password" action="#{accountController.changePassword()}" class="btn btn-primary" />
+                            </div>
+                        </div>                        
+                    </h:form> 
+
+
+                </article>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

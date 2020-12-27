@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Furniture Shop  - Account</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./dashBoardLayout.xhtml">
+            <ui:define name="breadcumb">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>My Account</h2>
+                                <p>Account Dashboard</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li><h:link outcome="account" value="My Account"/></li>
+                                    <li class="active">Account Dashboard</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+            <ui:define name="dashBoardContent">
+                <article class="account-content">
+<!--                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times"></i></button>
+                        <strong>Warning!</strong> You have one unpaid order.
+                    </div>-->
+                    <h3>Welcome <span>#{accountController.currentCustomer.firstName}</span> !</h3>
+                    <div class="icon-nav row">
+                        <div class="col-xs-6 col-md-4">
+                            <h:link outcome="profile"><i class="fa fa-user"></i>Profile</h:link>
+                        </div>
+                        <div class="col-xs-6 col-md-4">
+                            <h:link outcome="orders"><i class="fa fa-tasks"></i>My Orders</h:link>
+                        </div>
+                        <div class="col-xs-6 col-md-4">
+                            <h:link outcome="wishlist"><i class="fa fa-tasks"></i>Wishlist</h:link>
+                        </div>                        
+                    </div>
+                    <h4>Uncompleted Orders</h4>
+                    <div class="table-responsive border">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="col-xs-2">Order ID</th>
+                                <th class="col-xs-3">Date</th>
+                                <th class="col-md-1 hidden-xs hidden-sm">Items</th>
+                                <th class="col-xs-2">Total Price</th>
+                                <th class="col-xs-3">Status</th>
+                                <th class="col-xs-1"></th>
+                            </tr>
+                            <c:forEach items="#{orderController.uncompletedOrders}" var="order">
+                                <tr>
+                                    <td>#{order.orderID}</td>
+                                    <td>#{order.orderDate}</td>
+                                    <td class="hidden-xs hidden-sm">#{order.ordersDetailsCollection.size()}</td>
+                                    <td>$#{order.total}</td>
+                                    <td><span class="label label-info">#{order.processStatus}</span></td>
+                                    <td>
+                                        <h:link outcome="singleOrder" class="btn btn-primary btn-sm" value="View">
+                                            <f:param name="orderID" value="#{order.orderID}"/>
+                                        </h:link>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </article>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

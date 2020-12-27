@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Income By Customer</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Report</h2>
+                <ol class="breadcrumb">
+                    <li class="active"><strong>Income By Customer</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content animated fadeInRightBig">
+                    <div class="panel panel-default col-lg-12">
+                        <div class="col-lg-5">  
+                            <div class="col-md-4">
+                                <h3 class="adminlogo"><b>Furniture Shop</b></h3>
+                            </div>
+                            <div class="col-md-8"><h2 class="text-center">(Top 15)</h2></div>
+
+                            <table id="reportData" class="table table-striped table-bordered table-responsive" style="font-size: 0.9em">
+                                <thead>
+                                    <tr>                                        
+                                        <th>Email</th>                                          
+                                        <th>Name</th>
+                                        <th>Income</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="#{customersReportController.data}" var="data" varStatus="index">
+                                        <tr>                                            
+                                            <td style="font-size: 0.8em">#{data.email}</td>
+                                            <td>#{data.name}</td>
+                                            <td>
+                                                <h:outputText value="#{data.income}">
+                                                    <f:convertNumber type="currency"/>
+                                                </h:outputText>
+                                            </td>                                              
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="border: none"></th>
+                                        <th style="text-align: right; border: none"><b>Total Income: </b></th>
+                                        <td style="border: none">
+                                            <h:outputText value="#{customersReportController.total}">
+                                                <f:convertNumber type="currency"/>
+                                            </h:outputText>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div id="stocked"></div>
+                        </div>
+                    </div>                    
+                </div>
+
+                <input type="hidden" id="numOfCusts" value="#{customersReportController.numOfCusts()}"/>
+                <c:forEach items="#{customersReportController.data}" var="data" varStatus="index">
+                    <input type="hidden" id="cust#{index.index+1}" value="#{data.income}" name="#{data.name}"/>
+                </c:forEach>
+            </ui:define>
+
+
+            <ui:define name="pageScripts">
+                <h:outputScript library = "Admin" name = "js/plugins/c3/d3.min.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/c3/c3.min.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/c3/CustomersReport.js" />
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>

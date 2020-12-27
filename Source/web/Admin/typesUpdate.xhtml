@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Update Type</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Types</h2>
+                <ol class="breadcrumb">
+                    <li><h:link outcome="typesView" value="Types"/></li>
+                    <li class="active"><strong>Update</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content">
+                    <h:form>
+                        <div class="panel panel-default col-lg-6 col-lg-offset-3 animated fadeInRightBig">
+                            <div class="panel-heading">
+                                <h1 class="text-primary"><h:outputText value="Edit Type"/></h1>
+                            </div>
+                            <div class="panel-body">
+                                <dl class="row">
+                                    <dt class="col-lg-2">ID</dt>
+                                    <dd class="col-lg-10"><h:inputText value="#{adminTypesController.selectedType.typeID}" class="form-control" readonly="true"/></dd>                            
+                                </dl>
+
+                                <dl class="row">
+                                    <dt class="col-lg-2">Name *</dt>
+                                    <dd class="col-lg-10">
+                                        <h:inputText value="#{adminTypesController.selectedType.typeName}" class="form-control" validatorMessage="Name can not be blank.">
+                                            <f:validator validatorId="requireValidator"/>
+                                        </h:inputText>
+                                    </dd>                            
+                                </dl>  
+                                
+                                <dl class="row">
+                                    <dt class="col-lg-2">Descriptions</dt>
+                                    <dd class="col-lg-10"><h:inputTextarea rows="3" value="#{adminTypesController.selectedType.descriptions}" class="form-control"/></dd>                            
+                                </dl>
+                            </div>
+                            
+                            <h:messages class="alert-danger"/>
+                            
+                            <div class="panel-footer">
+                                <h:commandButton value="Update" action="#{adminTypesController.update()}" class="btn btn-success"/>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>
+

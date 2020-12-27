@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Update Product</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Products</h2>
+                <ol class="breadcrumb">
+                    <li><h:link outcome="productsView" value="Products"/></li>
+                    <li class="active"><strong>Details</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content">
+                    <h:form enctype="multipart/form-data" id="profileForm">
+                        <div class="panel panel-default col-lg-12 col-lg-offset-0 animated fadeInRightBig">
+                            <div class="panel-heading">
+                                <h1 class="text-primary"><h:outputText value="Product Details"/></h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-lg-12">
+                                    <dl class="row">
+                                        <dt class="col-lg-3">ID</dt>
+                                        <dd class="col-lg-9"><h:inputText value="#{adminProductsController.selectedProduct.productID}" class="form-control" readonly="true" style="background-color: #fff"/></dd>                            
+                                    </dl>
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Name *</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.productName}" class="form-control" validatorMessage="Name can not be blank." readonly="true" style="background-color: #fff">
+                                                <f:validator validatorId="requireValidator"/>
+                                            </h:inputText>
+                                        </dd>                            
+                                    </dl>  
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Price *</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.price}" class="form-control" required="true" requiredMessage="Price can not be blank." validatorMessage="Invalid Price." readonly="true" style="background-color: #fff">
+                                            </h:inputText>
+                                        </dd>                            
+                                    </dl>
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Category</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.categoryID.categoryName}" class="form-control" readonly="true" style="background-color: #fff"/>
+                                        </dd>                            
+                                    </dl>
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Type</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.typeID.typeName}" class="form-control" readonly="true" style="background-color: #fff"/>
+                                        </dd>                            
+                                    </dl>
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Brand</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.brandID.brandName}" class="form-control" readonly="true" style="background-color: #fff"/>
+
+                                        </dd>                            
+                                    </dl>
+
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Images *</dt>
+                                        <dd class="col-lg-9">
+                                            <div class="col-lg-3">
+                                                <img src='../resources/images/Products/#{adminProductsController.selectedProduct.productImages.split(";")[0]}' alt="" class="img-responsive" id="productImage1" style="padding-bottom: 5px;"/>
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img src='../resources/images/Products/#{adminProductsController.selectedProduct.productImages.split(";")[1]}' alt="" class="img-responsive" id="productImage2" style="padding-bottom: 5px;"/>
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img src='../resources/images/Products/#{adminProductsController.selectedProduct.productImages.split(";")[2]}' alt="" class="img-responsive" id="productImage3" style="padding-bottom: 5px;"/>
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img src='../resources/images/Products/#{adminProductsController.selectedProduct.productImages.split(";")[3]}' alt="" class="img-responsive" id="productImage4" style="padding-bottom: 5px;"/>
+
+                                            </div>
+                                        </dd>                            
+                                    </dl>
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Description</dt>
+                                        <dd class="col-lg-9"><h:inputTextarea rows="5" value="#{adminProductsController.selectedProduct.descriptions}" class="form-control" readonly="true" style="background-color: #fff"/></dd>                            
+                                    </dl>     
+
+                                    <dl class="row">
+                                        <dt class="col-lg-3">Feature</dt>
+                                        <dd class="col-lg-9">
+                                            <h:inputText value="#{adminProductsController.selectedProduct.feature}" class="form-control" readonly="true" style="background-color: #fff"/>
+                                        </dd>   
+                                    </dl> 
+                                </div>
+
+                            </div>
+
+                            <h:messages class="alert-danger"/>
+
+                            <div class="panel-footer">
+                                <h:link outcome="productsUpdate" value="Update" class="btn btn-success btn-sm">
+                                    <f:param value="#{product.productID}" name="id"/>
+                                </h:link> 
+                            </div>
+
+                            <h:inputFile id="chooseProductImage1" value="#{adminProductsController.image[0]}" style="opacity: 0; position: absolute; top: 0; left: 0; width: 0; height: 0;" onchange="changeImage(event, this, 1)">
+                                <f:validator validatorId="changeAvatarValidator"/>
+                            </h:inputFile>
+                            <h:inputFile id="chooseProductImage2" value="#{adminProductsController.image[1]}" style="opacity: 0; position: absolute; top: 0; left: 0; width: 0; height: 0;" onchange="changeImage(event, this, 2)">
+                                <f:validator validatorId="changeAvatarValidator"/>
+                            </h:inputFile>
+                            <h:inputFile id="chooseProductImage3" value="#{adminProductsController.image[2]}" style="opacity: 0; position: absolute; top: 0; left: 0; width: 0; height: 0;" onchange="changeImage(event, this, 3)">
+                                <f:validator validatorId="changeAvatarValidator"/>
+                            </h:inputFile>
+                            <h:inputFile id="chooseProductImage4" value="#{adminProductsController.image[3]}" style="opacity: 0; position: absolute; top: 0; left: 0; width: 0; height: 0;" onchange="changeImage(event, this, 4)">
+                                <f:validator validatorId="changeAvatarValidator"/>
+                            </h:inputFile>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>
+

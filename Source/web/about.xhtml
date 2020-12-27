@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop - About</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <p>Furniture Store</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">About Store</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content eshop">
+                    <div class="container">
+                        <div class="default-style about">
+                            <h2>About</h2>
+                            <div class="row">
+                                <div class="col-sm-7 col-md-6 text-justify">
+                                    <p>Furniture Store is a company that sells furniture. They started out as a small local business, making and selling furniture to those around them in a small city. After several years in business, Furniture Store has become a famous name in the area. They sell furniture at a variety of prices and designs for customers to choose from. They are always trusted and satisfied by customers with the value of the product and reasonable prices.</p>
+<!--                                    <h2>OUR PHILOSOPHY</h2>
+                                    <p>Our philosophy's pretty simple: we don't take fashion or life too seriously.</p>
+                                    <p>From over 4 million fans on social and an online magazine, we're the dress you need at the weekend, and the moments you need when you're down.</p>
+                                    <h2>OUR CHARITY STRATEGY</h2>
+                                    <p>We all know that it's better to give than to receive, that's why we've set up Fashion Man's charity program to raise money and awareness for causes close to our hearts.</p>-->
+                                </div>
+                                <div class="col-sm-5 col-md-6">
+                                    <h:graphicImage name="images/slide-2.png" class="img-responsive" alt=""/>
+                                </div>
+                            </div>
+                            <div class="icon-nav row">
+                                <div class="col-xs-6 col-sm-4">
+                                    <h:link outcome="privacy-policy">
+                                        <i class="fa fa-lock"></i> Privacy Policy
+                                    </h:link>
+                                </div>
+                                <div class="col-xs-6 col-sm-4">
+                                    <h:link outcome="terms-conditions">
+                                        <i class="fa fa-book"></i> Terms &amp; Conditions
+                                    </h:link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>  Furniture Shop - Order Successfully</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>MARC Fashion</h2>
+                                <p>Order successfully</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">Order Successfully</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content error">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="error-wrapper">
+                                    <div class="error-text">
+                                        <h1>ORDER SUCCESSFULLY</h1>
+                                        <p>Thank you for your order. We will make it on processing as soon as possible.</p>
+                                        <p><h:link outcome="index" value="Let go back to shop more"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

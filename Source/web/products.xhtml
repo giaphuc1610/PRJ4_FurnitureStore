@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop  - Product Details</title>
+    </h:head>
+    <h:body>        
+        <ui:composition template="./commonLayout.xhtml">
+            <!--CONTENT-->
+            <ui:define name="content">
+
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <c:if test="#{not empty filterController.currentCat}">
+                                    <h2>#{filterController.currentCat.categoryName}</h2>
+                                    <p>#{filterController.currentType.typeName}</p>
+                                </c:if>
+                                <c:if test="#{not empty filterController.currentBrand}">
+                                    <h2>Brand</h2>
+                                    <p>#{filterController.currentBrand.brandName}</p>
+                                </c:if>
+                                <c:if test='#{not empty request.getParameter("from")}'>
+                                    <h2>Price</h2>
+                                    <p>From $#{filterController.from}.00 to $#{filterController.to}.00</p>
+                                </c:if>
+                            </div>
+
+
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <c:if test="#{not empty filterController.currentCat}">
+                                        <li>
+                                            <h:link outcome="products" value="#{filterController.currentCat.categoryName}">
+                                                <f:param name="categoryID" value="#{filterController.currentCat.categoryID}"/>
+                                                <f:param name="typeID" value="#{categoryController.getFirstType(filterController.currentCat.categoryID)}"/>
+                                                <f:param name="page" value="1"/>
+                                                <f:param name="pageSize" value="#{filterController.pageSize}"/>
+                                            </h:link>    
+                                        </li>
+                                        <li class="active">#{filterController.currentType.typeName}</li>
+                                    </c:if>
+                                    <c:if test="#{not empty filterController.currentBrand}">
+                                        <li class="active">#{filterController.currentBrand.brandName}</li>
+                                    </c:if>   
+                                    <c:if test='#{not empty request.getParameter("from")}'>
+                                        <li class="active">Price from $#{filterController.from}.00 to $#{filterController.to}.00</li>
+                                    </c:if>  
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                
+                
+                
+                
+                <!--Product-->
+                <section class="content products">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <aside class="sidebar">
+
+                                    <div class="widget widget-categories">
+                                        <h3><a role="button" data-toggle="collapse" href="#widget-categories-collapse" aria-expanded="true" aria-controls="widget-categories-collapse">Categories</a></h3>
+                                        <div class="collapse in" id="widget-categories-collapse" aria-expanded="true" role="tabpanel">
+                                            <div class="widget-body">
+                                                <ul class="list-unstyled" id="categories" role="tablist" aria-multiselectable="true">
+                                                    <c:forEach items="#{categoryController.categories}" var="category">
+                                                        <li class="panel">
+                                                            <a class='#{filterController.isCurrentCat(category) ? "" : "collapsed"}' role="button" data-toggle="collapse" data-parent="#categories" href="#parent-#{category.categoryID}" aria-controls="parent-#{category.categoryID}">
+                                                                <!--Men | Women-->
+                                                                #{category.categoryName}
+                                                                <span>[#{category.productsCollection.size()}]</span>
+                                                            </a>
+                                                            <ul id="parent-#{category.categoryID}" class='list-unstyled panel-collapse collapse #{filterController.isCurrentCat(category) ? "in" : ""}' role="menu">
+                                                                
+                                                                
+                                                                <c:forEach items="#{typeController.getTypesByCat(category.categoryID)}" var="type">
+                                                                    <li class='#{filterController.isActive(type, category) ? "active" : ""}'>
+                                                                        <h:link outcome="products" value="#{type.typeName}">
+                                                                            <f:param name="categoryID" value="#{category.categoryID}"/>
+                                                                            <f:param name="typeID" value="#{type.typeID}"/>
+                                                                            <f:param name="page" value="1"/>
+                                                                            <f:param name="pageSize" value="#{filterController.pageSize}"/>
+                                                                        </h:link>  
+                                                                    </li>
+                                                                </c:forEach>
+                                                                <li class='#{filterController.isAllType(category) ? "active" : ""}'>
+                                                                    <h:link outcome="products" value="All">
+                                                                        <f:param name="categoryID" value="#{category.categoryID}"/>
+                                                                        <f:param name="typeID" value="all"/>
+                                                                        <f:param name="page" value="1"/>
+                                                                        <f:param name="pageSize" value="#{filterController.pageSize}"/>
+                                                                    </h:link>  
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <!--FILTER Brand-->
+                                    <div class="widget widget-categories" >
+                                        <h3><a role="button" data-toggle="collapse" href="#widget-brands-collapse" aria-expanded="true" aria-controls="widget-categories-collapse">Brands</a></h3>
+                                        <div class="collapse in" id="widget-brands-collapse" aria-expanded="true">
+                                            <div class="widget-body">
+                                                <ul class="list-unstyled">
+                                                    <c:forEach items="#{brandController.brands}" var="brand">
+                                                        <li>
+                                                            <h:link outcome="products" style='#{filterController.isCurrentBrand(brand) ? "" : "color: #666666"}' class='#{filterController.isCurrentBrand(brand) ? "" : "collapsed"}'>
+                                                                #{brand.brandName}<span>[#{brand.productsCollection.size()}]</span>
+                                                                <f:param name="brandID" value="#{brand.brandID}"/>
+                                                                <f:param name="page" value="1"/>
+                                                                <f:param name="pageSize" value="#{filterController.pageSize}"/>
+                                                            </h:link>  
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <!--PRICE-->
+                                    <div class="widget widget-price">
+                                        <h3><a role="button" data-toggle="collapse" href="#widget-price-collapse" aria-expanded="true" aria-controls="widget-price-collapse">Filter by price</a></h3>
+                                        <div class="collapse in" id="widget-price-collapse" aria-expanded="true" role="tabpanel">
+                                            <div class="widget-body">
+                                                <div class="price-slider">                                                    
+                                                    <h:form id="priceForm">
+                                                        <h:inputHidden id="from" value="#{filterController.from}"/>
+                                                        <h:inputHidden id="to" value="#{filterController.to}"/>
+                                                        <h:inputText class="pull-left" id="amount" value="$#{filterController.from}" readonly="true"/>
+                                                        <h:inputText class="pull-right" id="amount2" value="$#{filterController.to}" readonly="true"/>                                                        
+                                                    </h:form>
+                                                    
+                                                    <div id="slider-range"></div> 
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </aside>
+                            </div>
+
+                            <div class="col-sm-9">
+                                <div class="products-header">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-4">
+                                            <form class="form-inline products-per-page">
+                                                <div class="form-group">
+                                                    <label>Show:</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="pageSize">
+                                                        <option value="6" selected='#{filterController.pageSize == 6 ? "true" : ""}'>6</option>
+                                                        <option value="12" selected='#{filterController.pageSize == 12 ? "true" : ""}'>12</option>
+                                                        <option value="18" selected='#{filterController.pageSize == 18 ? "true" : ""}'>18</option>
+                                                        <option value="24" selected='#{filterController.pageSize == 24 ? "true" : ""}'>24</option>
+                                                        <option value="-1" selected='#{filterController.pageSize == -1 ? "true" : ""}'>All</option>                                                        
+                                                    </select>
+
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-8">
+                                            <div class="btn-group toggle-list-grid hidden-xs" role="group">
+                                                <button type="button" class="btn btn-default active" id="toggle-grid"><i class="fa fa-th"></i></button>
+                                                <button type="button" class="btn btn-default" id="toggle-list"><i class="fa fa-list"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row grid" id="products">
+                                    <c:forEach items="#{filterController.filteredProducts}" var="product">
+                                        <div class="col-sm-4 col-xs-6">
+                                            <article class="product-item">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="product-overlay">
+                                                            <div class="product-mask"></div>
+                                                            <h:link outcome="singleProduct" class="product-permalink">
+                                                                <f:param name="productID" value="#{product.productID}"/>
+                                                            </h:link>             
+                                                            <h:graphicImage name='images/Products/#{product.productImages.split(";")[0]}' class="img-responsive" alt='#{product.productImages.split(";")[0]}'/>
+                                                            <h:graphicImage name='images/Products/#{product.productImages.split(";")[1]}' class="img-responsive product-image-2" alt='#{product.productImages.split(";")[1]}'/>
+                                                            <div class="product-quickview">                                                                
+                                                                <a class="btn btn-quickview" data-toggle="modal" data-target="#product-#{product.productID}">Quick View</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="product-body">
+                                                            <h3>#{product.productName}</h3>
+                                                            <div class="product-labels">
+                                                                <c:if test="#{not empty product.feature.trim()}">
+                                                                    <span class="label label-info">#{product.feature}</span>
+                                                                </c:if>  
+                                                                <!--<span class="label label-danger">sale</span>-->
+                                                            </div>
+                                                            <div class="product-rating">
+                                                                <c:forEach begin="1" end="#{averageRatingController.getAverageRating(product.productID).intValue()}">
+                                                                    <i class="fa fa-star"></i>
+                                                                </c:forEach>
+                                                                <c:forEach begin="#{averageRatingController.getAverageRating(product.productID).intValue()+1}" end="5">
+                                                                    <i class="fa fa-star-o"></i>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <span class="price">
+                                                                <!--<del><span class="amount">$#{product.price}.00</span></del>-->
+                                                                <ins>
+                                                                    $<h:outputText value="#{product.price}" class="amount">
+                                                                        <f:convertNumber pattern="#0.00" />
+                                                                    </h:outputText>
+                                                                </ins>
+                                                            </span>
+                                                            <p>#{product.descriptions}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </c:forEach>
+
+                                </div>
+
+                                <div class="pagination-wrapper">
+                                    <ul class="pagination" id="pagination-demo"></ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <input type="hidden" value="#{filterController.minPrice}" id="minPrice"/>
+                <input type="hidden" value="#{filterController.maxPrice}" id="maxPrice"/>
+                <input type="hidden" value="#{filterController.pageSize}" id="pageSize"/>
+                <input type="hidden" value="#{filterController.pages}" id="totalPages"/>
+                <input type="hidden" value="#{filterController.page}" id="page"/>
+                <input type="hidden" value="#{filterController.redirectUrl}" id="redirectUrl"/>
+
+                <c:forEach items="#{filterController.filteredProducts}" var="product">
+                    <div class="modal fade modal-quickview" id="product-#{product.productID}" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <article class="product-item product-single">
+                                        <div class="row">                                            
+                                            <div class="col-sm-12">
+                                                <h:link outcome="singleProduct">
+                                                    <f:param name="productID" value="#{product.productID}"/>
+                                                    <h3>#{product.productName}</h3>
+                                                </h:link>                                                
+                                                <div class="product-labels">
+                                                    <c:if test="#{not empty product.feature}">
+                                                        <span class="label label-info">#{product.feature}</span>
+                                                    </c:if>                                            
+                                                    <!--<span class="label label-danger">sale</span>-->
+                                                </div>
+                                                <div class="product-rating">
+                                                    <c:forEach begin="1" end="#{averageRatingController.getAverageRating(product.productID).intValue()}">
+                                                        <i class="fa fa-star"></i>
+                                                    </c:forEach>
+                                                </div>
+                                                <span class="price">
+                                                    <!--<del><span class="amount">$#{product.price}.00</span></del>-->
+                                                    <ins>
+                                                        $<h:outputText value="#{product.price}" class="amount">
+                                                            <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
+                                                    </ins>
+                                                </span>
+                                                <ul class="list-unstyled product-info">
+                                                    <li><span>ID</span>#{product.productID}</li>
+                                                    <li><span>Availability</span>In Stock</li>
+                                                    <li><span>Brand</span>#{product.brandID.brandName}</li>
+                                                    <li><span>Type</span>#{product.typeID.typeName}</li>
+                                                </ul>
+                                                <p>#{product.descriptions}</p>                                            
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

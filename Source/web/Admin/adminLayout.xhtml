@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <h:outputStylesheet library = "Admin" name = "css/bootstrap.min.css" />
+        <h:outputStylesheet library = "Admin" name = "font-awesome/css/font-awesome.css" />
+        <h:outputStylesheet library = "Admin" name = "css/plugins/dataTables/datatables.min.css" />
+        <h:outputStylesheet library = "Admin" name = "css/plugins/sweetalert/sweetalert.css" />
+        <h:outputStylesheet library = "Admin" name = "css/plugins/morris/morris-0.4.3.min.css" />
+        <h:outputStylesheet library = "Admin" name = "css/plugins/c3/c3.min.css" />
+
+        <h:outputStylesheet library = "Admin" name = "css/animate.css" />
+        <h:outputStylesheet library = "Admin" name = "css/style.css" />
+    </h:head>
+
+    <h:body>
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <h:form>
+                        <ul class="nav metismenu" id="side-menu">
+
+                            <li class="nav-header">
+                                <div class="dropdown profile-element"> 
+
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                        <span class="clear"> 
+                                            <span class="block m-t-xs" id="adminName"> <strong class="font-bold">#{adminAccountsController.currentAdmin.fullName}</strong></span>
+
+                                        </span> 
+                                    </a>
+                                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                        <li><h:commandLink action="#{adminAccountsController.toProfile()}" value="Profile"/></li>
+                                        <li class="divider"></li>
+                                        <li><h:commandLink action="#{adminAccountsController.logout()}" value="Log out"/></li>
+                                    </ul>
+                                </div>
+                                <div class="logo-element">
+                                    <h:graphicImage value="/resources/images/noithatgiare.jpg" style="width: 52px;"/>
+                                </div>
+                            </li>
+
+
+
+                            <li class='#{session.getAttribute("currentPage").equals("reports")?"active":""}'>
+                                <a><i class="fa fa-line-chart"></i> <span class="nav-label">Income Reports</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li class='#{session.getAttribute("currentPageChild").equals("categories")?"active":""}'>
+                                        <h:commandLink action="#{categoriesReportController.toCategories()}">
+                                            <i class="fa fa-pie-chart"></i> By Categories
+                                        </h:commandLink>
+                                    </li>
+                                    <li class='#{session.getAttribute("currentPageChild").equals("brands")?"active":""}'>
+                                        <h:commandLink action="#{brandsReportController.toBrands()}">
+                                            <i class="fa fa-bar-chart"></i> By Brands
+                                        </h:commandLink>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+
+
+
+                            <li class='#{session.getAttribute("currentPage").equals("ordersAdmin")?"active":""}'>
+                                <h:link outcome="ordersView">
+                                    <i class="fa fa-money"></i> <span class="nav-label">Orders</span> 
+                                    <c:if test="#{adminOrdersController.notifications.size()!=0}">
+                                        <span><i class="fa fa-bell-o pull-right"></i></span>
+                                    </c:if>
+                                </h:link>
+                            </li>
+
+                            <li class='#{session.getAttribute("currentPage").equals("customersAdmin")?"active":""}'>
+                                <h:link outcome="customersView">
+                                    <i class="fa fa-user-o"></i> <span class="nav-label">Customers</span> 
+                                </h:link>
+                            </li>
+
+                            <li class='#{session.getAttribute("currentPage").equals("productsAdmin")?"active":""}'>
+                                <a><i class="fa fa-shopping-bag"></i> <span class="nav-label">Products</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li class='#{session.getAttribute("currentPageChild").equals("productsView")?"active":""}'>
+                                        <h:link outcome="productsView" value="View"/>
+                                    </li>
+                                    <li class='#{session.getAttribute("currentPageChild").equals("productsCreate")?"active":""}'>
+                                        <h:commandLink action="#{adminProductsController.toCreate()}" value="Create"/>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class='#{session.getAttribute("currentPage").equals("categoriesAdmin")?"active":""}'>
+                                <a><i class="fa fa-server"></i> <span class="nav-label">Categories</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li class='#{session.getAttribute("currentPageChild").equals("categoriesView")?"active":""}'>
+                                        <h:link outcome="categoriesView" value="View"/>
+                                    </li>
+                                    <li class='#{session.getAttribute("currentPageChild").equals("categoriesCreate")?"active":""}'>
+                                        <h:commandLink action="#{adminCategoriesController.toCreate()}" value="Create"/>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class='#{session.getAttribute("currentPage").equals("typesAdmin")?"active":""}'>
+                                <a><i class="fa fa-server"></i> <span class="nav-label">Types</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li class='#{session.getAttribute("currentPageChild").equals("typesView")?"active":""}'>
+                                        <h:link outcome="typesView" value="View"/>
+                                    </li>
+                                    <li class='#{session.getAttribute("currentPageChild").equals("typesCreate")?"active":""}'>
+                                        <h:commandLink action="#{adminTypesController.toCreate()}" value="Create"/>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class='#{session.getAttribute("currentPage").equals("brandsAdmin")?"active":""}'>
+                                <a><i class="fa fa-server"></i> <span class="nav-label">Brands</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li class='#{session.getAttribute("currentPageChild").equals("brandsView")?"active":""}'>
+                                        <h:link outcome="brandsView" value="View"/>
+                                    </li>
+                                    <li class='#{session.getAttribute("currentPageChild").equals("brandsCreate")?"active":""}'>
+                                        <h:commandLink action="#{adminBrandsController.toCreate()}" value="Create"/>
+                                    </li>
+                                </ul>
+                            </li>  
+
+
+
+                            <li class="special_link">
+                                <h:commandLink action="#{adminAccountsController.toProfile()}">
+                                    <i class="fa fa-vcard"></i> <span class="nav-label">  My Profile</span>
+                                </h:commandLink>
+                            </li>
+
+                            <li class="landing_link">
+                                <h:link outcome="/index" target="_blank">
+                                    <i class="fa fa-heart"></i> <span class="nav-label">Go to Shop</span>
+                                </h:link>
+                            </li>   
+
+                        </ul>
+                    </h:form>
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li><span class="m-r-sm text-muted welcome-message">Welcome to <b>Furniture Store</b>.</span></li>
+                            <li class="dropdown">                                
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">#{adminOrdersController.notifications.size()}</span>
+                                </a>                                
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <c:forEach items="#{adminOrdersController.notifications}" var="notification">
+                                        <li>
+                                            <h:link outcome="ordersView">
+                                                <i class="fa fa-bell"></i> #{notification}
+                                            </h:link>
+                                        </li>                                    
+                                    </c:forEach>                                    
+                                </ul>
+                            </li>
+                            <li>
+                                <h:form>
+                                    <h:commandLink action="#{adminAccountsController.logout()}">
+                                        <i class="fa fa-sign-out"></i> Log out
+                                    </h:commandLink>
+                                </h:form>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-4">
+
+
+                        <ui:insert name="breadcum" ></ui:insert>
+
+
+                    </div>
+                </div>                
+
+
+                <ui:insert name="content" ></ui:insert> 
+
+
+<!--                <div class="footer"><strong>Copyright</strong>go to Furniter Shop</div>-->
+
+            </div>
+        </div>
+
+        <!-- Mainly scripts -->
+        <h:outputScript library = "Admin" name = "js/jquery-3.1.1.min.js" />
+        <h:outputScript library = "Admin" name = "js/bootstrap.min.js" />
+        <h:outputScript library = "Admin" name = "js/plugins/metisMenu/jquery.metisMenu.js" />
+        <h:outputScript library = "Admin" name = "js/plugins/slimscroll/jquery.slimscroll.min.js" />
+
+        <!-- Custom and plugin javascript -->
+        <h:outputScript library = "Admin" name = "js/inspinia.js" />
+        <h:outputScript library = "Admin" name = "js/plugins/pace/pace.min.js" />
+
+        <h:outputScript library = "Admin" name = "js/plugins/dataTables/datatables.min.js" />
+        <h:outputScript library = "Admin" name = "js/plugins/sweetalert/sweetalert.min.js" />
+
+        <h:outputScript library = "Admin" name = "js/adminCustom.js" />
+
+
+        <ui:insert name="pageScripts" ></ui:insert>
+
+
+    </h:body>
+</html>

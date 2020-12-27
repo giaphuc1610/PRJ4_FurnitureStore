@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>  Admin - Login</title>
+
+        <h:outputStylesheet library = "Admin" name = "css/bootstrap.min.css" />
+        <h:outputStylesheet library = "Admin" name = "font-awesome/css/font-awesome.css" />
+        <h:outputStylesheet library = "Admin" name = "css/animate.css" />
+        <h:outputStylesheet library = "Admin" name = "css/style.css" />
+    </h:head>
+    <h:body class="gray-bg">
+        <h3 class="logo-name adminlogo">
+            <h:graphicImage value="/resources/images/noithatgiare.png" />
+        </h3>
+        <div class="middle-box text-center loginscreen animated fadeInDown">
+            
+            <h:form class="m-t" id="loginForm">
+                <div class="form-group">
+                    <h:inputText value="#{adminAccountsController.email}" class="form-control" required="true" requiredMessage="Email can not be blank." a:placeholder="Username" validatorMessage="Email is invalid">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>
+                </div>
+                <div class="form-group">
+                    <h:inputSecret value="#{adminAccountsController.password}" class="form-control" required="true" requiredMessage="Password can not be blank." a:placeholder="Password" redisplay="true"/>
+                </div>                
+                <h:commandButton action="#{adminAccountsController.checkLogin()}" value="Login" class="btn btn-primary block full-width m-b"/>
+            </h:form>            
+        </div>
+        <div class="middle-box loginscreen animated fadeInRight">
+            <h:messages class="alert alert-danger"/>  
+        </div>
+        
+
+        <!-- Mainly scripts -->
+        <h:outputScript library = "Admin" name = "js/jquery-3.1.1.min.js" />
+        <h:outputScript library = "Admin" name = "js/bootstrap.min.js" />
+    </h:body>
+</html>
+

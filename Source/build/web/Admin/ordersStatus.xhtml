@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Update Order</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Orders</h2>
+                <ol class="breadcrumb">
+                    <li><h:link outcome="ordersView" value="Orders"/></li>
+                    <li class="active"><strong>Change Status</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content">
+                    <h:form>
+                        <div class="panel panel-default col-lg-6 col-lg-offset-3 animated fadeInRightBig">
+                            <div class="panel-heading">
+                                <h1 class="text-primary"><h:outputText value="Edit Order Status"/></h1>
+                            </div>
+                            <div class="panel-body">
+                                <dl class="row">
+                                    <dt class="col-lg-2">ID</dt>
+                                    <dd class="col-lg-10"><h:inputText value="#{adminOrdersController.editedOrder.orderID}" readonly="true" class="form-control"/></dd>                            
+                                </dl>
+
+                                <dl class="row">
+                                    <dt class="col-lg-2">Customer Email</dt>
+                                    <dd class="col-lg-10"><h:inputText value="#{adminOrdersController.editedOrder.customerEmail.email}" class="form-control" readonly="true"/></dd>                            
+                                </dl>   
+                                
+                                <dl class="row">
+                                    <dt class="col-lg-2">Total</dt>
+                                    <dd class="col-lg-10"><h:inputText value="#{adminOrdersController.editedOrder.total}" class="form-control" readonly="true"/></dd>                            
+                                </dl>   
+
+                                <dl class="row">
+                                    <dt class="col-lg-2">Status</dt>
+                                    <dd class="col-lg-10">
+                                        <h:selectOneMenu class="form-control" value="#{adminOrdersController.editedOrder.processStatus}">
+                                            <f:selectItem itemValue="#{adminOrdersController.editedOrder.processStatus}" itemLabel="#{adminOrdersController.editedOrder.processStatus}" />
+                                            <c:if test='#{adminOrdersController.editedOrder.processStatus.equals("Processing")}'>
+                                                <f:selectItem itemValue="Shipping" itemLabel="Shipping" />
+                                                <f:selectItem itemValue="Completed" itemLabel="Completed" />
+                                            </c:if>
+                                            <c:if test='#{adminOrdersController.editedOrder.processStatus.equals("Shipping")}'>
+                                                <f:selectItem itemValue="Completed" itemLabel="Completed" />
+                                            </c:if>              
+                                        </h:selectOneMenu>
+                                    </dd>                            
+                                </dl>                        
+                            </div>
+                            <div class="panel-footer">
+                                <c:if test="#{adminOrdersController.editedOrder.orderState}">
+                                    <h:commandButton value="Update" action="#{adminOrdersController.update()}" class='btn btn-success'/>
+                                </c:if>                                
+                                <h:link value="Details" outcome="ordersDetails" class="btn btn-primary pull-right">
+                                    <f:param name="id" value="#{adminOrdersController.editedOrder.orderID}"/>
+                                </h:link>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>
+

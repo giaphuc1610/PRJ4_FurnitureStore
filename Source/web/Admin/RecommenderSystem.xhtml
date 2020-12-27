@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Recommender System</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Recommender System</h2>
+                <ol class="breadcrumb">
+                    <li class="active"><strong>Recommender System</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content">
+                    <div class="panel panel-default col-lg-12">
+                        <div class="well col-lg-4 animated fadeInRightBig">   
+                            <h4 class="text-primary">Inputs for Training: </h4>
+                            <h:form id="rsForm">
+                                Number of Variable X  (>=1): 
+                                <h:inputText value="#{recommenderController.num_features}" required="true" class="form-control" requiredMessage="Number of Features can not be blank" validatorMessage="Invalid Number of Features" id="numFeatures">
+                                    <f:validateLongRange minimum="1"/>
+                                </h:inputText>
+                                Number of Iterations (>=1): 
+                                <h:inputText value="#{recommenderController.num_iters}" required="true" class="form-control" requiredMessage="Number of Iterations can not be blank" validatorMessage="Invalid Number of Iterations">
+                                    <f:validateLongRange minimum="1"/>
+                                </h:inputText>
+                                Lambda (>=0): 
+                                <h:inputText value="#{recommenderController.lambda}" required="true" class="form-control"  label="Lambda" requiredMessage="Lambda can not be blank" validatorMessage="Invalid Lambda">
+                                    <f:validateDoubleRange minimum="0"/>
+                                </h:inputText>
+                                <h:commandButton value="Start Training" action="#{recommenderController.recommenderSystem(false)}" class="btn btn-primary"/>
+                                <a class="btn btn-info pull-right" onclick="openModal();currentSlide(1)">Algorithm</a>
+                            </h:form>
+                            <h:messages class="alert alert-danger"/>  
+                            <hr style="height: 2px; background-color: grey"/>
+                        </div>
+
+                        <c:if test="#{not empty recommenderController.result}">
+                            <div class="col-lg-4 animated fadeInUpBig">
+                                <div class="panel panel-primary">
+                                    <div class="page-heading"><h3>Error learning curve - By Variables X</h3></div>
+                                    <div id="morris-line-chart"></div>                                    
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4 animated fadeInUpBig">
+                                <div class="panel panel-primary">
+                                    <div class="page-heading"><h3>Cost Values</h3></div>
+                                    <div id="morris-area-chart"></div>
+                                </div>
+                            </div>                            
+
+                            <input type="hidden" id="iters" value="#{recommenderController.num_iters}"/>
+                            <c:forEach items="#{recommenderController.costHistory}" var="cost" varStatus="index">
+                                <input type="hidden" id="cost#{index.index+1}" value="#{cost}"/>
+                            </c:forEach>
+                            <c:forEach items="#{recommenderController.errorTraining}" var="error" varStatus="index">
+                                <input type="hidden" id="errorTraining#{index.index+1}" value="#{error}"/>
+                            </c:forEach>
+                            <c:forEach items="#{recommenderController.errorCV}" var="error" varStatus="index">
+                                <input type="hidden" id="errorCV#{index.index+1}" value="#{error}"/>
+                            </c:forEach>
+                        </c:if>
+                    </div>                    
+                </div>
+
+                <div id="myModal" class="modal">
+                    <span class="rsClose rsCursor" onclick="closeModal()">&times;</span>
+                    <div class="modal-content">
+
+                        <div class="mySlides">                            
+                            <img src="../resources/images/RS/1.jpg" style="width:100%"/>
+                        </div>
+
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/2.jpg" style="width:100%"/>
+                        </div>
+
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/3.jpg" style="width:100%"/>
+                        </div>
+
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/4.jpg" style="width:100%"/>
+                        </div>
+                        
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/5.jpg" style="width:100%"/>
+                        </div>
+                        
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/6.jpg" style="width:100%"/>
+                        </div>
+                        
+                        <div class="mySlides">
+                            <img src="../resources/images/RS/7.jpg" style="width:100%"/>
+                        </div>
+
+                        <a class="rsPrev" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="rsNext" onclick="plusSlides(1)">&#10095;</a>
+
+                        <div class="caption-container">
+                            <p id="caption"></p>
+                        </div>
+
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/1.jpg" style="width:100%" onclick="currentSlide(1)" alt="test"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/2.jpg" style="width:100%" onclick="currentSlide(2)"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/3.jpg" style="width:100%" onclick="currentSlide(3)"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/4.jpg" style="width:100%" onclick="currentSlide(4)"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/5.jpg" style="width:100%" onclick="currentSlide(5)"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/6.jpg" style="width:100%" onclick="currentSlide(6)"/>
+                        </div>
+                        <div class="rsColumn">
+                            <img class="demo cursor" src="../resources/images/RS/7.jpg" style="width:100%" onclick="currentSlide(7)"/>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+
+            <ui:define name="pageScripts">
+                <h:outputScript library = "Admin" name = "js/plugins/morris/raphael-2.1.0.min.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/morris/morris.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/morris/morris-RS.js" />
+                <h:outputScript library = "Admin" name = "js/rsModal.js" />
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>

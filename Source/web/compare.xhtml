@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop - Cart</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>FurnitureStore</h2>
+                                <p>Compare Products</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">Compare Products</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <c:if test="#{empty productController.compareList}">
+                    <section class="content account">
+                        <div class="container">
+                            There is nothing to compare.
+                        </div>                          
+                    </section>                    
+                </c:if>
+                
+                <c:if test="#{not empty productController.compareList}">
+                    <section class="content account">
+                        <div class="container">
+                            <div class="account-content compare">
+                                <div class="table-responsive">
+                                    <table id="table-compare" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <th class="accept">                                                        
+                                                        <h:form>
+                                                            <i class="fa fa-arrows btn btn-primary hidden-xs"></i>
+                                                            <h:commandLink action="#{productController.removeComparedItem(comparedItem.productID)}">
+                                                                <i class="fa fa-times btn btn-primary"></i>
+                                                            </h:commandLink>
+                                                        </h:form>                                                        
+                                                    </th>
+                                                </c:forEach>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="title">Product</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>                                                    
+                                                        <h:link outcome="singleProduct" >
+                                                            <h:graphicImage name='images/Products/#{comparedItem.productImages.split(";")[0]}' class="img-responsive center-block" alt=""/>
+                                                            #{comparedItem.productName}
+                                                            <f:param name="productID" value="#{comparedItem.productID}"/>
+                                                        </h:link>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Brand</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>#{comparedItem.brand}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Category</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>#{comparedItem.category}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Type</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>#{comparedItem.type}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Feature</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>#{comparedItem.feature}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Descriptions</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>#{comparedItem.descriptions}</td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Price</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>
+                                                        <del><span class="amount">$#{comparedItem.price}.00</span></del>
+                                                        <ins>
+                                                            $<h:outputText value="#{comparedItem.price*0.9}" class="amount">
+                                                                <f:convertNumber pattern="#0.00" />
+                                                            </h:outputText>
+                                                        </ins>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Rating</td>
+                                                <c:forEach items="#{productController.compareList}" var="comparedItem">
+                                                    <td>
+                                                        <div class="product-rating">
+                                                            <c:forEach begin="1" end="#{averageRatingController.getAverageRating(comparedItem.productID).intValue()}">
+                                                                <i class="fa fa-star"></i>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </td>
+                                                </c:forEach>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>    
+                        </div>
+                    </section>
+                </c:if>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

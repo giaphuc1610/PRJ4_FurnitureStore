@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>  - Search Product</title>
+    </h:head>
+    <h:body>        
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Furniture Shop</h2>
+                                <p>Search</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">Search</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <section class="content products">
+                    <div class="container">
+
+                        <div class="row">                          
+
+                            <div class="products-header">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-4">
+                                        <form class="form-inline products-per-page">
+                                            <div class="form-group">
+                                                <label>Show:</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control" id="pageSize">
+                                                    <option value="6" selected='#{searchControllers.pageSize == 6 ? "true" : ""}'>6</option>
+                                                    <option value="12" selected='#{searchControllers.pageSize == 12 ? "true" : ""}'>12</option>
+                                                    <option value="18" selected='#{searchControllers.pageSize == 18 ? "true" : ""}'>18</option>
+                                                    <option value="24" selected='#{searchControllers.pageSize == 24 ? "true" : ""}'>24</option>
+                                                    <option value="-1" selected='#{searchControllers.pageSize == -1 ? "true" : ""}'>All</option>                                                        
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-xs-6 col-sm-8">
+                                        <div class="btn-group toggle-list-grid hidden-xs" role="group">
+                                            <button type="button" class="btn btn-default active" id="toggle-grid"><i class="fa fa-th"></i></button>
+                                            <button type="button" class="btn btn-default" id="toggle-list"><i class="fa fa-list"></i></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row grid" id="products">
+                                <c:forEach items="#{searchControllers.searchResult}" var="product">
+                                    <div class="col-sm-3 col-xs-6">
+                                        <article class="product-item">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <div class="product-overlay">
+                                                        <div class="product-mask"></div>
+                                                        <h:link outcome="singleProduct" class="product-permalink">
+                                                            <f:param name="productID" value="#{product.productID}"/>
+                                                        </h:link>             
+                                                        <h:graphicImage name='images/Products/#{product.productImages.split(";")[0]}' class="img-responsive" alt='#{product.productImages.split(";")[0]}'/>
+                                                        <h:graphicImage name='images/Products/#{product.productImages.split(";")[1]}' class="img-responsive product-image-2" alt='#{product.productImages.split(";")[1]}'/>
+                                                        <div class="product-quickview">                                                                
+                                                            <a class="btn btn-quickview" data-toggle="modal" data-target="#product-#{product.productID}">Quick View</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="product-body">
+                                                        <h3>#{product.productName}</h3>
+                                                        <div class="product-labels">
+                                                            <c:if test="#{not empty product.feature.trim()}">
+                                                                <span class="label label-info">#{product.feature}</span>
+                                                            </c:if>  
+                                                            <span class="label label-danger">sale</span>
+                                                        </div>
+                                                        <div class="product-rating">
+                                                            <c:forEach begin="1" end="#{averageRatingController.getAverageRating(product.productID)}">
+                                                                <i class="fa fa-star"></i>
+                                                            </c:forEach>
+                                                            <c:forEach begin="#{averageRatingController.getAverageRating(product.productID)+1}" end="5">
+                                                                <i class="fa fa-star-o"></i>
+                                                            </c:forEach>
+                                                        </div>
+                                                        <span class="price">
+                                                            <del><span class="amount">$#{product.price}.00</span></del>
+                                                            <ins>
+                                                                $<h:outputText value="#{product.price*0.9}" class="amount">
+                                                                    <f:convertNumber pattern="#0.00" />
+                                                                </h:outputText>
+                                                            </ins>
+                                                        </span>
+                                                        <p>#{product.descriptions}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </c:forEach>
+                            </div>
+
+                            <div class="pagination-wrapper">
+                                <ul class="pagination" id="pagination-demo"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <input type="hidden" value="#{searchControllers.pageSize}" id="pageSize"/>
+                <input type="hidden" value="#{searchControllers.pages}" id="totalPages"/>
+                <input type="hidden" value="#{searchControllers.page}" id="page"/> 
+                <input type="hidden" value="searchProducts.xhtml?" id="redirectUrl"/>
+
+                <c:forEach items="#{searchControllers.searchResult}" var="product">
+                    <div class="modal fade modal-quickview" id="product-#{product.productID}" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <article class="product-item product-single">
+                                        <div class="row">                                            
+                                            <div class="col-sm-12">
+                                                <h:link outcome="singleProduct">
+                                                    <f:param name="productID" value="#{product.productID}"/>
+                                                    <h3>#{product.productName}</h3>
+                                                </h:link>                                                
+                                                <div class="product-labels">
+                                                    <c:if test="#{not empty product.feature}">
+                                                        <span class="label label-info">#{product.feature}</span>
+                                                    </c:if>                                            
+                                                    <span class="label label-danger">sale</span>
+                                                </div>
+                                                <div class="product-rating">
+                                                    <c:forEach begin="1" end="#{averageRatingController.getAverageRating(product.productID).intValue()}">
+                                                        <i class="fa fa-star"></i>
+                                                    </c:forEach>
+                                                </div>
+                                                <span class="price">
+                                                    <del><span class="amount">$#{product.price}.00</span></del>
+                                                    <ins>
+                                                        $<h:outputText value="#{product.price*0.9}" class="amount">
+                                                            <f:convertNumber pattern="#0.00" />
+                                                        </h:outputText>
+                                                    </ins>
+                                                </span>
+                                                <ul class="list-unstyled product-info">
+                                                    <li><span>ID</span>#{product.productID}</li>
+                                                    <li><span>Availability</span>In Stock</li>
+                                                    <li><span>Brand</span>#{product.brandID.brandName}</li>
+                                                    <li><span>Type</span>#{product.typeID.typeName}</li>
+                                                </ul>
+                                                <p>#{product.descriptions}</p>                                            
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
+

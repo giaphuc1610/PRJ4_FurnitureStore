@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop - Cart</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Furniture </h2>
+                                <p>Cart</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li class="active">Cart</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content account">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <article class="account-content">
+                                    <c:if test="#{empty productController.cart}">
+                                        Your Cart is empty.
+                                    </c:if>
+                                    <c:if test="#{not empty productController.cart}">
+                                        <div class="products-order shopping-cart">
+                                            <div class="table-responsive">
+                                                <table class="table table-products">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Product</th>
+                                                            <th>Unit Price</th>
+                                                            <th>Quantity</th>
+                                                            <th>Subtotal</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach items="#{productController.cart}" var="cartItem">
+
+                                                            <tr>
+                                                                <!--image-->
+                                                                <td class="col-xs-1">
+                                                                    <h:graphicImage name='images/Products/#{cartItem.image.split(";")[0]}' class="img-responsive" alt=""/>
+                                                                </td>
+
+                                                                <!--product name-->
+                                                                <td class="col-xs-3 col-md-5">
+                                                                    <h4>
+                                                                        <h:link outcome="singleProduct" value="#{cartItem.productName}">
+                                                                            <f:param name="productID" value="#{cartItem.productID}"/>
+                                                                        </h:link>
+                                                                        <small>#{cartItem.category}, #{cartItem.type}, #{cartItem.brand}</small>
+                                                                    </h4>
+                                                                </td>
+
+                                                                <!--Unit price-->
+                                                                <td class="col-xs-1 text-center">    
+                                                                    $<span>
+                                                                        <h:outputText value="#{cartItem.price*0.9}">
+                                                                            <f:convertNumber pattern="#0.00" />
+                                                                        </h:outputText>
+                                                                    </span>
+                                                                </td>
+
+                                                                <!--Quantity-->
+                                                                <td class="col-xs-2 col-md-2">
+                                                                    <div class="form-group">
+                                                                        <input type="number" class="form-control" value="#{cartItem.quantity}" min="1" required="true" onfocus="getOldQuantity(this.value)" onblur="changeQuantity('#{cartItem.productID}', this.value)"/>
+                                                                    </div>
+                                                                </td>
+
+                                                                <!--Sub total-->
+                                                                <td class="col-xs-1 text-center">    
+                                                                    $<span>
+                                                                        <h:outputText value="#{cartItem.price*0.9*cartItem.quantity}">
+                                                                            <f:convertNumber pattern="#0.00" />
+                                                                        </h:outputText>
+                                                                    </span>
+                                                                </td>
+
+                                                                <!--Remove Product-->
+                                                                <td class="col-xs-2 text-center">
+                                                                    <a class="btn btn-primary" onclick="showConfirm('#{cartItem.productID}', true)" id="btnRemove#{cartItem.productID}">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>                                            
+                                                                    <h:form id="form#{cartItem.productID}" class="hidden">
+                                                                        <p>Remove this product?</p>
+                                                                        <h:commandLink action="#{productController.removeCartItem(cartItem.productID)}" class="btn btn-warning" value="Yes"/>
+                                                                        <a class="btn btn-warning" onclick="showConfirm('#{cartItem.productID}', false)">No</a>
+                                                                    </h:form>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="box">
+                                            <div class="row">
+                                                <div class="col-sm-4 col-sm-offset-8">
+                                                    <ul class="list-unstyled order-total">
+                                                        <li>
+                                                            <span class="total" style="display: inline-block; min-width: 300px; font-size: 2rem"><b style="font-size: 2rem; font-weight: 700">Total: </b>$
+                                                                <h:outputText value="#{productController.total}">
+                                                                    <f:convertNumber pattern="#0.00" />
+                                                                </h:outputText>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="clearfix">
+                                            <h:link outcome="checkout" class="btn btn-primary btn-lg pull-right" value="Checkout" id="checkoutCart"/>
+                                        </div>                                        
+                                    </c:if>
+                                </article>
+                            </div>
+                        </div> 
+                    </div>
+                </section>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop - Checkout</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Checkout</h2>
+                                <p>Payment Method</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li><h:link outcome="checkout" value="Checkout"/></li>
+                                    <li class="active">Payment Method</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content account">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <article class="account-content checkout-steps">
+
+                                    <div class="row row-no-padding">
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step active">
+                                                <div class="number">1</div>
+                                                <div class="title">Shipping Information</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step active">
+                                                <div class="number">2</div>
+                                                <div class="title">Payment Method</div>
+                                            </div>
+                                        </div>                                   
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step">
+                                                <div class="number">3</div>
+                                                <div class="title">Review</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="progress checkout-progress hidden-xs">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"></div>
+                                    </div>
+                                    
+                                    <div class="row row-no-padding">
+                                        <h:form id="paymentForm">                                            
+                                            <div class="checkout shipping-information">
+                                                <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                                                    <h3>Payment Method</h3>
+                                                    <div class="products-order checkout">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div id="payment-methods" role="tablist" aria-multiselectable="true">
+                                                                    <h:selectOneRadio value="#{orderController.currentOrders.paymentMethod}" id="method" styleClass="toggle-radio-buttons">
+                                                                        <f:selectItem itemValue="Cash" itemLabel="Cash On Delivery"/>
+                                                                        <f:selectItem itemValue="Bank Transfer" itemLabel="Payment by Bank Transfer"/>
+                                                                        <f:selectItem itemValue="Credit Card" itemLabel="Payment by Credit Card"/>
+                                                                    </h:selectOneRadio>
+
+                                                                    <div class="panel radio">
+                                                                        <label for="radio-payment-2" class="hidden" data-toggle="collapse" data-target="#parent-1" data-parent="#payment-methods" aria-controls="parent-1" id="cashPayment"></label>
+                                                                        <div id="parent-1" class="panel-collapse collapse" role="tabpanel"></div>
+                                                                    </div>
+                                                                    <div class="panel radio">                                                                       
+                                                                        <label for="radio-payment-2" class="hidden" data-toggle="collapse" data-target="#parent-2" data-parent="#payment-methods" aria-controls="parent-2" id="bankTransfer"></label>
+                                                                        <div id="parent-2" class="panel-collapse collapse" role="tabpanel">
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td><label>Bank:</label></td>
+                                                                                    <td><label><span>SoftBank</span></label></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><label>Account name:</label></td>
+                                                                                    <td><label><span>Furniture Shop</span></label></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><label>Account number:</label></td>
+                                                                                    <td><label><span>CZ00 0000 0000 0000 0000 0000</span></label></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel radio">                                                                        
+                                                                        <label data-toggle="collapse" data-target="#parent-3" data-parent="#payment-methods" aria-controls="parent-4" class="hidden" id="creditCard"></label>
+                                                                        <div id="parent-3" class="panel-collapse collapse" role="tabpanel">
+                                                                            <div class="credit-card-form">
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-sm-9">
+                                                                                        <label>Credit Card Number<span class="required">*</span></label>
+                                                                                        <div class="input-group">
+                                                                                            <h:inputText value="#{orderController.cardNumber}" class="form-control" size="16" required="true" requiredMessage="Card Number can not be blank."/>
+                                                                                            <span class="input-group-addon" id="credit-card-img"><i class="fa fa-credit-card"></i></span>
+                                                                                        </div>
+                                                                                        <div id="credit-card-error"></div>    
+                                                                                    </div>
+                                                                                    <div class="form-group col-sm-3">
+                                                                                        <label>CVV/CVC<span class="required">*</span></label>
+                                                                                        <input type="text" class="form-control" maxlength="4" value="123"/>   
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-sm-7">
+                                                                                        <label>Name on Card<span class="required">*</span></label>
+                                                                                        <h:inputText value="#{orderController.cardName}" class="form-control" required="true" requiredMessage="Name on Card can not be blank."/>
+                                                                                    </div>
+                                                                                    <div class="form-group col-sm-5 expiration-date">
+                                                                                        <label>Expiration date<span class="required">*</span></label>
+                                                                                        <div>
+                                                                                            <h:selectOneMenu value="#{orderController.cardExpireMonth}" class="form-control">
+                                                                                                <f:selectItem itemValue="MM" itemLabel="MM" itemDisabled="true"/>
+                                                                                                <f:selectItem itemValue="01" itemLabel="01"/>
+                                                                                                <f:selectItem itemValue="02" itemLabel="02"/>
+                                                                                                <f:selectItem itemValue="03" itemLabel="03"/>                                                                                                
+                                                                                                <f:selectItem itemValue="04" itemLabel="04"/>
+                                                                                                <f:selectItem itemValue="05" itemLabel="05"/>
+                                                                                                <f:selectItem itemValue="06" itemLabel="06"/>
+                                                                                                <f:selectItem itemValue="07" itemLabel="07"/>
+                                                                                                <f:selectItem itemValue="08" itemLabel="08"/>
+                                                                                                <f:selectItem itemValue="09" itemLabel="09"/>
+                                                                                                <f:selectItem itemValue="10" itemLabel="10"/>
+                                                                                                <f:selectItem itemValue="11" itemLabel="11"/>
+                                                                                                <f:selectItem itemValue="12" itemLabel="12"/>
+                                                                                            </h:selectOneMenu>
+                                                                                            <h:selectOneMenu value="#{orderController.cardExpireYear}" class="form-control">
+                                                                                                <f:selectItem itemValue="YY" itemLabel="YY" itemDisabled="true"/>   
+                                                                                                <f:selectItem itemValue="19" itemLabel="19"/>
+                                                                                                <f:selectItem itemValue="20" itemLabel="20"/>                                                                                                
+                                                                                                <f:selectItem itemValue="21" itemLabel="21"/>
+                                                                                                <f:selectItem itemValue="22" itemLabel="22"/>
+                                                                                                <f:selectItem itemValue="23" itemLabel="23"/>
+                                                                                            </h:selectOneMenu>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix">
+                                                        <h:commandLink action="checkoutReview" class="btn btn-primary btn-lg pull-right" value="Continue"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </article>
+                            </div>
+                        </div> 
+                    </div>
+                </section>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

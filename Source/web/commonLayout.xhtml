@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'/>
+        <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,900,800' rel='stylesheet' type='text/css'/>
+
+        <h:outputStylesheet library = "css" name = "bootstrap.min.css" />
+        <h:outputStylesheet library = "css" name = "ui/1.11.1/themes/smoothness/jquery-ui.css" />        
+        <h:outputStylesheet library = "css" name = "font-awesome.min.css" />        
+        <h:outputStylesheet library = "css" name = "dragtable.css" />        
+        <h:outputStylesheet library = "css" name = "owl.carousel.css" />        
+        <h:outputStylesheet library = "css" name = "animate.css" />       
+        <h:outputStylesheet library = "css" name = "datepicker3.css" /> 
+        <h:outputStylesheet library = "css" name = "custom.css" />             
+        <h:outputStylesheet library = "css" name = "color/red.css" /> 
+
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </h:head>
+
+    <h:body>
+        <div id="scrolltop" class="hidden-xs"><i class="fa fa-angle-up"></i></div>
+        <div id="page-wrapper">
+            <!--HEADER-->
+            <ui:insert name="header" >
+                <div class="top-header hidden-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <ul class="list-inline contacts">
+                                    <li><i class="fa fa-envelope"></i>support@furniturestore.com</li>
+                                    <li><i class="fa fa-phone"></i> 999 999 999</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-7 text-right">
+                                <ul class="list-inline links">
+                                    <c:if test="#{not empty accountController.currentCustomer}">
+                                        <li>
+                                            <a>
+                                                Welcome <span class="text-info" style="font-weight: bold">#{accountController.currentCustomer.firstName} </span>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="#{not empty productController.compareList}">
+<!--                                        <li><h:link outcome="compare" value="Compare (#{productController.compareList.size()})"/></li>-->
+                                    </c:if>                                    
+<!--                                    <c:if test="#{not empty productController.cart}">
+                                        <li><h:link outcome="checkout" value="Checkout"/></li>
+                                    </c:if>    -->
+                                    <c:if test='#{not empty session.getAttribute("user")}'>
+                                        <c:if test="#{not empty wishlistController.wishlist}">
+                                            <li><h:link outcome="wishlist" value="Wishlist (#{wishlistController.wishlist.size()})"/></li>
+                                        </c:if>                                        
+                                        <li><h:link outcome="account" value="My account"/></li>                                                                        
+                                        <li><h:form><h:commandLink action="#{accountController.logout(session)}" value="Logout"/></h:form></li>
+                                    </c:if>
+                                    <c:if test='#{empty session.getAttribute("user")}'>
+                                        <li><h:link outcome="signin" value="Login"/></li>
+                                    </c:if>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <header class="navbar navbar-default navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <h:link outcome="index.xhtml" class="navbar-brand" >
+                                <h:graphicImage  
+                                    value = "resources/images/logo.png" style="height: 90px; position: absolute; top: 9px; left: 17px" class="navbar-header__img--mobile"/> 
+                                <!--Noi that gia re-->
+                            </h:link>                                    
+
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <!--<p class="navbar-text hidden-xs hidden-sm">The easiest way to shop</p>-->
+
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <li><h:link outcome="index" value="Home"/></li>
+
+                                <li class="dropdown megamenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="300" data-close-others="true">Our Products</a>
+                                    <ul class="dropdown-menu">
+                                        <c:forEach items="#{categoryController.categories}" var="item">
+                                            <li class="col-sm-#{categoryController.col_width} col-md-#{categoryController.col_width}">
+                                                <ul class="list-unstyled">
+                                                    <li class="title">#{item.categoryName}</li>
+                                                    <c:forEach items="#{typeController.getTypesByCat(item.categoryID)}" var="type">
+                                                        <li>
+                                                            <h:link outcome="products" value="#{type.typeName}">
+                                                                <f:param name="categoryID" value="#{item.categoryID}"/>
+                                                                <f:param name="typeID" value="#{type.typeID}"/>
+                                                                <f:param name="page" value="1"/>
+                                                                <f:param name="pageSize" value="6"/>
+                                                            </h:link>
+<!--                                                            <c:if test="#{typeController.isHasNew(type.typeID, item.categoryID)}">
+                                                                <span class="label label-danger pull-right">New</span>
+                                                            </c:if>    -->
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown navbar-cart hidden-xs">
+                                    <h:link outcome="cart" class="dropdown-toggle" style="position: relative">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <div class="navbar-cart_Count">#{productController.cart.size()}</div>
+                                    </h:link>
+                                    <ul class="dropdown-menu" style="display: none">
+
+                                        <c:if test="#{empty productController.cart}">
+                                            <li><p>Cart is empty</p></li>
+                                        </c:if>
+
+                                        <c:if test="#{not empty productController.cart}">
+<!--                                            <c:forEach items="#{productController.cart}" var="item">-->
+
+                                            <!--                                                <li>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-sm-3">
+                                                                                                        <h:graphicImage name='images/Products/#{item.image.split(";")[0]}' class="img-responsive" alt=""/>
+                                                                                                    </div>
+                                                                                                    <div class="col-sm-9">
+                                                                                                        <h4>
+                                                                                                            <h:link outcome="singleProduct" value="#{item.productName}">
+                                                                                                                <f:param name="productID" value="#{item.productID}"/>
+                                                                                                            </h:link>
+                                                                                                        </h4>
+                                                                                                        <p>#{item.quantity}x - 
+                                                                                                            $<h:outputText value="#{item.price*0.9}">
+                                                                                                                <f:convertNumber pattern="#0.00" />
+                                                                                                            </h:outputText>
+                                                                                                        </p>
+                                                                                                        <a href="#" class="remove" onclick="removeCartItem('#{item.productID}')"><i class="fa fa-times-circle"></i></a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </li>-->
+                                            <!--</c:forEach>-->                                        
+
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h:link outcome="cart" value="View Cart" class="btn btn-primary btn-block"/>
+                                                    </div>
+                                                    <!--                                                    <div class="col-sm-6">
+                                                                                                            <h:link outcome="checkout" value="Checkout" class="btn btn-primary btn-block"/>
+                                                                                                        </div>-->
+                                                </div>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </li>
+                                <li class="dropdown navbar-search hidden-xs">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <h:form>
+                                                <div class="input-group input-group-lg">
+                                                    <h:inputText value="#{searchControllers.search}" class="form-control" a:placeholder="Search ..." required="true" requiredMessage="Search string could not be empty.">
+                                                        <f:ajax event="keyup" render="productNames" onevent="registerLazy"/>
+                                                    </h:inputText> 
+                                                    <span class="input-group-btn">
+                                                        <h:commandButton value="Search" class="btn btn-primary" action="searchProducts"/>
+                                                    </span>                                                    
+                                                </div>
+                                                <h:messages style="display: none"/>
+                                                <div style="max-height: 250px; overflow-y: auto;" id="lazyContainer">
+                                                    <h:dataTable value="#{searchControllers.searchProducts()}" var="product" id="productNames" class='#{searchControllers.searchProducts().size()>0?"table table-hover":""}' style="cursor: pointer">                    
+                                                        <h:column>
+                                                            <h:link outcome="singleProduct">
+                                                                <f:param name="productID" value="#{product.productID}"/>
+                                                                <img class="lazy" width='24px' height="36px" data-src='resources/images/Products/#{product.productImages.split(";")[0]}' alt="" />
+                                                                <h:outputText value="#{product.productName}" escape="false" style="vertical-align: middle; padding-left: 10px"/>
+                                                            </h:link>
+                                                        </h:column>                    
+                                                    </h:dataTable>
+                                                </div>
+                                            </h:form>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+
+                        </div>                        
+                    </div>
+
+                </header>
+            </ui:insert>
+
+            <!--CONTENT-->
+            <ui:insert name="content" ></ui:insert>            
+
+            <!--FOOTER-->
+            <ui:insert name="footer" >
+                <footer class="navbar navbar-default">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="footer-widget footer-widget-links">
+                                    <h4>FurnitureStore</h4>
+                                    <p style="text-align: justify; color: #a6a1a1">Inspired by the passion for fashion, the desire to bring beauty to all girls and boys and more is the desire to contribute to creating a new image for the industry
+                                        In Vietnamese style,  has focused on investing in quality and product design with
+                                        motto "BE YOUR LIFE".</p>
+                                </div>
+                            </div>   
+
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="footer-widget footer-widget-links" style="padding: 0 60px">
+                                    <h4>INFORMATION</h4>
+                                    <ul class="list-unstyled">
+                                        <li><h:link outcome="about" value="About Shop"/></li>                                        
+                                        <li><h:link outcome="terms-conditions" value="Terms &amp; Conditions"/></li>
+                                        <li><h:link outcome="privacy-policy" value="Privacy Policy"/></li>
+                                        <li><h:link outcome="account" value="My account"/></li>
+                                    </ul>
+                                </div>
+                            </div>      
+
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="footer-widget footer-widget-contacts">
+                                    <h4>CONTACTS</h4>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fa fa-envelope"></i>support@furniturestore.com</li>
+                                        <li><i class="fa fa-phone"></i>999 999 999</li>
+                                        <li class="social">
+                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <a href="#"><i class="fa fa-instagram"></i></a>
+                                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                                            <a href="#"><i class="fa fa-tumblr"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="footer-bottom">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="copyright">© FurnitureStore All right reserved.</p>
+                                    <!--<p class="copyright">Created by <b>T11808M1 Group 1.</b></p>-->
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-inline payment-methods">
+                                        <li><i class="fa fa-cc-amex"></i></li>
+                                        <li><i class="fa fa-cc-diners-club"></i></li>
+                                        <li><i class="fa fa-cc-discover"></i></li>
+                                        <li><i class="fa fa-cc-jcb"></i></li>
+                                        <li><i class="fa fa-cc-mastercard"></i></li>
+                                        <li><i class="fa fa-cc-paypal"></i></li>
+                                        <li><i class="fa fa-cc-stripe"></i></li>
+                                        <li><i class="fa fa-cc-visa"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </ui:insert>
+        </div>
+
+
+        <!--JAVASCRIPT & JQUERY-->
+        <h:outputScript library = "js" name = "jquery-latest.min.js" />
+        <h:outputScript library = "js" name = "ui/1.11.1/jquery-ui.js" />    
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMnivbc0ony38uYjyp5tJoMgZO-JnhlOA" type="text/javascript"></script>
+        <h:outputScript library = "js" name = "bootstrap.min.js" />
+        <h:outputScript library = "js" name = "bootstrap-hover-dropdown.min.js" />
+        <h:outputScript library = "js" name = "SmoothScroll.js" />
+        <h:outputScript library = "js" name = "jquery.dragtable.js" />
+        <h:outputScript library = "js" name = "jquery.card.js" />
+        <h:outputScript library = "js" name = "owl.carousel.min.js" />        
+        <h:outputScript library = "js" name = "jquery.mb.YTPlayer.min.js" />
+        <h:outputScript library = "js" name = "jquery.twbsPagination.js" />
+        <h:outputScript library = "js" name = "jquery.lazy_1_7_7.js" />
+        <h:outputScript library = "js" name = "jquery.lazy.plugins.js" />
+        <h:outputScript library = "js" name = "custom.js" />
+        <h:outputScript library = "js" name = "rating.js" />
+        <h:outputScript library = "js" name = "bootstrap-datepicker.js" />
+    </h:body>
+</html>

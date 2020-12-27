@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Furniture Shop - Checkout</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./commonLayout.xhtml">
+            <ui:define name="content">
+                <section class="breadcrumb-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Checkout</h2>
+                                <p>Shipping Information</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <ol class="breadcrumb">
+                                    <li><h:link outcome="index" value="Home"/></li>
+                                    <li><h:link outcome="checkout" value="Checkout"/></li>
+                                    <li class="active">Shipping Information</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content account">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <article class="account-content checkout-steps">
+
+                                    <div class="row row-no-padding">
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step active">
+                                                <div class="number">1</div>
+                                                <div class="title">Shipping Information</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step">
+                                                <div class="number">2</div>
+                                                <div class="title">Payment Method</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4">
+                                            <div class="checkout-step">
+                                                <div class="number">3</div>
+                                                <div class="title">Review</div>
+                                            </div>
+                                        </div>
+                                        <div class="progress checkout-progress hidden-xs">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0;"></div>
+                                        </div>
+                                        <h:form id="shippingInfoForm">                                            
+                                            <div class="checkout shipping-information">
+                                                <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                                                    <h3>Shipping Information</h3>
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-12">
+                                                            <label>Receiver's Name <span class="required">*</span></label>
+                                                            <h:inputText value="#{orderController.currentOrders.shipName}" class="form-control" validatorMessage="Receiver's name can not be blank.">
+                                                                <!--                                                                <f:validator validatorId="requireValidator"/>-->
+                                                            </h:inputText>
+                                                        </div>
+                                                        <div class="form-group col-sm-12">
+                                                            <label>Address <span class="required">*</span></label>
+                                                            <h:inputText value="#{orderController.currentOrders.shipAddress}" class="form-control" validatorMessage="Address can not be blank.">
+                                                                <!--                                                                <f:validator validatorId="requireValidator"/>-->
+                                                            </h:inputText>
+                                                        </div>
+                                                        <div class="form-group col-sm-12">
+                                                            <label>Phone <span class="required">*</span></label>
+                                                            <h:inputText value="#{orderController.currentOrders.shipPhone}" class="form-control" validatorMessage="Phone number should be minimum 10 number.">                                                                
+                                                                <f:validateRegex pattern="(0|[1-9])+([0-9]{9})\b"/>
+                                                            </h:inputText>
+                                                        </div>
+                                                        <div class="form-group col-sm-12" id="data_1">
+                                                            <label>Shipping Date (dd/mm/yyyy) <span class="required">*</span> </label>
+                                                            <span> (at least 3 days from today)</span>
+                                                            <div class="input-group date">
+                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                <input type="text" class="form-control" readonly="true" style="cursor: pointer" id="shipDatePicker" value="#{orderController.currentOrders.shipDate}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-sm-12">
+                                                            <label>Note</label>
+                                                            <h:inputTextarea value="#{orderController.currentOrders.shipNote}" class="form-control" rows="3"/>
+                                                        </div>
+                                                    </div>
+                                                    <h:messages class="alert alert-danger"/>
+                                                    <div class="clearfix">
+                                                        <h:commandLink action="#{orderController.continueShippingInfo()}" class="btn btn-primary btn-lg pull-right" value="Continue"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h:inputText value="#{orderController.currentOrders.shipDate}" style="cursor: pointer" id="shipDate" class="hidden"/>
+                                        </h:form>
+                                    </div>
+
+                                </article>
+                            </div>
+                        </div> 
+                    </div>
+                </section>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

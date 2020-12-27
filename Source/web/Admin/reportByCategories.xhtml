@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Income By Category</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../Admin/adminLayout.xhtml">
+
+
+            <ui:define name="breadcum">
+                <h2>Report</h2>
+                <ol class="breadcrumb">
+                    <li class="active"><strong>Income By Category</strong></li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="content">
+                <div class="wrapper wrapper-content animated fadeInRightBig">
+                    <div class="panel panel-default col-lg-12">
+                        <div class="col-lg-8">  
+                            <div class="col-md-4">
+                                <h1 class="adminlogo"><b>Furniture Store</b></h1>
+                            </div>
+
+                            <table id="reportData" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Categories</th>
+                                        <th>%</th>
+                                        <th>Income</th>  
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="#{categoriesReportController.data}" var="data" varStatus="index">
+                                        <tr>
+                                            <td>#{index.index+1}</td>
+                                            <td>#{data.category}</td>
+                                            <td>
+                                                <h:outputText value="#{data.proportion}">
+                                                    <f:convertNumber type="percent"/>
+                                                </h:outputText>
+                                            </td>
+                                            <td>
+                                                <h:outputText value="#{data.income}">
+                                                    <f:convertNumber type="currency"/>
+                                                </h:outputText>                                                
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="border: none"></th><th style="border: none"></th>
+                                        <th style="text-align: right; border: none"><b>Total Income: </b></th>
+                                        <td style="border: none">
+                                            <h:outputText value="#{categoriesReportController.total}">
+                                                <f:convertNumber type="currency"/>
+                                            </h:outputText>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div id="morris-donut-chart" ></div> 
+                        </div>
+                    </div>                    
+                </div>
+
+                <input type="hidden" id="numOfCats" value="#{categoriesReportController.numOfCats()}"/>
+                <c:forEach items="#{categoriesReportController.data}" var="data" varStatus="index">
+                    <input type="hidden" id="cat#{index.index+1}" name="#{data.category}" value="#{data.income}"/>
+                </c:forEach>
+            </ui:define>
+
+
+            <ui:define name="pageScripts">
+                <h:outputScript library = "Admin" name = "js/plugins/morris/raphael-2.1.0.min.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/morris/morris.js" />
+                <h:outputScript library = "Admin" name = "js/plugins/morris/morris-CategoriesReport.js" />
+            </ui:define>
+
+
+        </ui:composition>
+    </h:body>
+</html>
