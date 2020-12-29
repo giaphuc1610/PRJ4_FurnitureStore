@@ -157,7 +157,7 @@ public class ProductController implements Serializable {
     }
 
     public String addToCart() {
-        Customers user = (Customers) getSession().getAttribute("user");
+        String user = (String) getSession().getAttribute("user");
         
         if(user == null){
             return "signin";
